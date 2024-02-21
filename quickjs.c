@@ -30,7 +30,7 @@
 #include <assert.h>
 #include <sys/time.h>
 #include <time.h>
-#include <fenv.h>
+// #include <fenv.h>
 #include <math.h>
 #if defined(__APPLE__)
 #include <malloc/malloc.h>
@@ -65,6 +65,10 @@
 #define CONFIG_PRINTF_RNDN
 #endif
 
+#ifdef CONFIG_PRINTF_RNDN
+#undef CONFIG_PRINTF_RNDN
+#endif
+
 /* define to include Atomics.* operations which depend on the OS
    threads */
 #if !defined(EMSCRIPTEN)
@@ -76,6 +80,12 @@
 #define CONFIG_STACK_CHECK
 #endif
 
+#if defined(__my_os__)
+#undef CONFIG_ATOMICS
+#undef CONFIG_STACK_CHECK
+#endif
+#define fesetround(mode)    ((void)mode)
+#define FE_TONEAREST        0
 
 /* dump object free */
 //#define DUMP_FREE
@@ -43252,7 +43262,7 @@ static int getTimezoneOffset(int64_t time)
     {
         struct tm tm;
         localtime_r(&ti, &tm);
-        res = -tm.tm_gmtoff / 60;
+        res = 10; // -tm.tm_gmtoff / 60;
     }
 #endif
     return res;

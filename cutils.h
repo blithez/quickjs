@@ -27,6 +27,10 @@
 
 #include <stdlib.h>
 #include <inttypes.h>
+#include "quickjs_prj.h"
+
+#define __my_os__
+#define CONFIG_BIGNUM
 
 #define likely(x)       __builtin_expect(!!(x), 1)
 #define unlikely(x)     __builtin_expect(!!(x), 0)
